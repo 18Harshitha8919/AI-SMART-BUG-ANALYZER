@@ -1,0 +1,22 @@
+[FATAL ERROR] - TELEMETRY DECRYPTOR MODULE FAILURE
+Timestamp: 2026-07-11T12:20:00Z
+Thread: main-thread-01
+
+An unhandled exception occurred in the authentication middleware filter chain:
+SecurityException: Public key lookup failed: exposed null signature descriptor
+
+Stack Trace:
+Traceback (most recent call last):
+  File "security/jwt_verifier.py", line 84, in verify_token
+    key = keystore.get_key(token.header['kid'])
+  File "security/keystore.py", line 42, in get_key
+    raise SecurityException("Public key lookup failed: exposed null signature descriptor")
+SecurityException: Public key lookup failed: exposed null signature descriptor
+
+Memory Dump Telemetry:
+  keystore_state: ROTATING
+  public_key_address: 0x0000000000000000 (NULL)
+  connection_tier: Production-Server
+  origin_ip: 192.168.1.105
+
+[WARNING] Access token validation bypassed. Restricting interface endpoints.
