@@ -3,8 +3,6 @@ import json
 import pickle
 import numpy as np
 from typing import List, Dict, Any, Tuple
-from sentence_transformers import SentenceTransformer
-
 # We import faiss inside classes or try-except blocks to catch import errors gracefully.
 try:
     import faiss
@@ -15,6 +13,22 @@ except ImportError:
 # Configure path to knowledgebase directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 KNOWLEDGEBASE_DIR = os.path.join(BASE_DIR, "knowledgebase")
+
+_model = None
+
+def get_transformer_model():
+    global _model
+    if _model is None:
+        print("Loading shared SentenceTransformer model ('all-MiniLM-L6-v2')...")
+        from sentence_transformers import SentenceTransformer
+        cache_dir = os.path.join(KNOWLEDGEBASE_DIR, "cache")
+        try:
+            _model = SentenceTransformer('all-MiniLM-L6-v2', cache_folder=cache_dir)
+            print("Model loaded successfully.")
+        except Exception as e:
+            print(f"Failed to load sentence-transformers model: {e}")
+            raise RuntimeError(f"Failed to load SentenceTransformer model: {e}")
+    return _model
 
 class NumpyVectorStore:
     """

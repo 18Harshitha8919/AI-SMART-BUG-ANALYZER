@@ -1,20 +1,18 @@
 import os
 from typing import List
-from sentence_transformers import SentenceTransformer
-from faiss_store import faiss_store, KNOWLEDGEBASE_DIR
+from faiss_store import faiss_store, KNOWLEDGEBASE_DIR, get_transformer_model
 from schemas.agent_schemas import DuplicateProfile
 
 class DuplicateAgent:
     def __init__(self):
-        # Load SentenceTransformer using local cache folder
-        cache_dir = os.path.join(KNOWLEDGEBASE_DIR, "cache")
-        self.model = SentenceTransformer('all-MiniLM-L6-v2', cache_folder=cache_dir)
+        pass
 
     def search_duplicates(self, title: str, description: str, k: int = 5) -> List[DuplicateProfile]:
         query_text = f"{title} {description}"
         try:
+            model = get_transformer_model()
             # Embed the query
-            query_vector = self.model.encode(query_text)
+            query_vector = model.encode(query_text)
             if hasattr(query_vector, "tolist"):
                 query_vector = query_vector.tolist()
                 

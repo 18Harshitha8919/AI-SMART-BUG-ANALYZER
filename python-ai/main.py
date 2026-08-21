@@ -4,28 +4,9 @@ import pandas as pd
 from typing import List, Dict, Any, Optional
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from pydantic import BaseModel
-from sentence_transformers import SentenceTransformer
-from faiss_store import faiss_store, KNOWLEDGEBASE_DIR
+from faiss_store import faiss_store, KNOWLEDGEBASE_DIR, get_transformer_model
 # SentenceTransformer initialization
 app = FastAPI(title="AI Smart Bug Analyzer & Fix Advisor Service", description="Embedding and FAISS Vector Database microservice")
-
-# Load model locally
-print("Loading SentenceTransformer model ('all-MiniLM-L6-v2')...")
-try:
-    # Use Cache folder within knowledgebase/ directory to avoid repeated downloads
-    cache_dir = os.path.join(KNOWLEDGEBASE_DIR, "cache")
-    model = SentenceTransformer('all-MiniLM-L6-v2', cache_folder=cache_dir)
-    print("Model loaded successfully.")
-except Exception as e:
-    print(f"Failed to load sentence-transformers model: {e}")
-    # Initialize a dummy/fallback model just in case network triggers failures
-    class DummyModel:
-        def encode(self, sentences):
-            # Return randomized mock embedding of dim 384
-            if isinstance(sentences, str):
-                return np.random.randn(384).tolist()
-            return np.random.randn(len(sentences), 384).tolist()
-    model = DummyModel()
 
 # Pydantic schemas
 class EmbedRequest(BaseModel):
@@ -54,6 +35,7 @@ def health_check():
 @app.post("/embed")
 def get_embeddings(request: EmbedRequest):
     try:
+        model = get_transformer_model()
         embeddings = model.encode(request.texts)
         if hasattr(embeddings, "tolist"):
             embeddings = embeddings.tolist()
@@ -71,6 +53,7 @@ def add_to_index(request: IndexRequest):
         metadatas = [item.metadata for item in request.items]
         
         # Generate embeddings
+        model = get_transformer_model()
         embeddings = model.encode(documents)
         if hasattr(embeddings, "tolist"):
             embeddings = embeddings.tolist()
@@ -84,6 +67,7 @@ def add_to_index(request: IndexRequest):
 def search_index(request: SearchRequest):
     try:
         # Embed query text
+        model = get_transformer_model()
         query_embed = model.encode(request.query)
         if hasattr(query_embed, "tolist"):
             query_embed = query_embed.tolist()
