@@ -351,5 +351,67 @@
     },
     "createdAt": "2026-08-13T12:03:59.543Z",
     "_id": "1786622639543"
+  },
+  {
+    "bugId": "BUG-1006",
+    "title": "Test Payment Gateway Failure",
+    "description": "Checkout crashed with NullPointerException in tokenizer.",
+    "severity": "Critical",
+    "priority": "High",
+    "environment": "Production",
+    "module": "Backend",
+    "reporterName": "Harshitha Bejjipuram",
+    "stackTrace": "java.lang.NullPointerException: Null session context`n  at PaymentAdapter.java:54 (tokenize)",
+    "errorLog": "Payment adapter failed.",
+    "cleanedDocument": "Test Payment Gateway Failure Checkout crashed with NullPointerException in tokenizer. java.lang.NullPointerException: Null session context`n at PaymentAdapter.java:54 (tokenize) Payment adapter failed.",
+    "attachments": [],
+    "agentInsights": {
+      "bug_id": "BUG-1006",
+      "triage": {
+        "triage_component": "Payment",
+        "severity": "Critical",
+        "priority": "P1",
+        "confidence": 95,
+        "reasoning": "AI triaged defect category to 'Payment' (score: 25). Application crashes or security vulnerability detected. Keywords match critical signature. Critical severity exception escalated priority to P1.",
+        "severity_reason": "Application crashes or security vulnerability detected. Keywords match critical signature.",
+        "priority_reason": "Critical severity exception escalated priority to P1."
+      },
+      "log_analysis": {
+        "exception_type": "NullReferenceException",
+        "error_message": "Null session context`n  at PaymentAdapter.java:54 (tokenize)",
+        "failed_class": "Paymentadapter",
+        "failed_method": "Unknown",
+        "timestamp": "2026-08-21 23:31:20",
+        "failure_reason": "Crashed during invocation of method Unknown() in class Paymentadapter.",
+        "file": "PaymentAdapter.java",
+        "line": 54,
+        "function": "Unknown",
+        "root_cause": "Decoded exception NullReferenceException inside thread context. The stack failed at line 54 within file PaymentAdapter.java executing function Unknown().",
+        "affected_code_path": []
+      },
+      "root_cause": {
+        "root_cause": "Null reference exception caused due to missing input validation checks.",
+        "confidence": 75,
+        "supporting_evidence": [
+          "BUG-234"
+        ],
+        "explanation": "System attempted to reference properties on a null or uninitialized object runtime context."
+      },
+      "duplicates": [],
+      "remediation": {
+        "immediate_fix": "Validate null inputs and object states before dereferencing variables in active methods.",
+        "long_term": "Adopt robust static analysis check utilities and establish structural defensive programming standards.",
+        "best_practices": [
+          "Adopt strict null checking assertions.",
+          "Incorporate verbose log traces.",
+          "Expand code coverage with unit testing tools.",
+          "Perform standard regression checking."
+        ]
+      },
+      "timestamp": "2026-08-21T18:01:20.499436Z",
+      "status": "completed"
+    },
+    "createdAt": "2026-08-21T18:01:20.502Z",
+    "_id": "1787335280502"
   }
 ]

@@ -1,6 +1,6 @@
 # Milestone 4 - End-to-End Validation & Test Report
 
-**Generated On**: 2026-08-21 20:16:03  
+**Generated On**: 2026-08-21 23:34:47  
 **Target System**: AI Smart Bug Analyzer & Fix Advisor (BugSense AI)  
 **Test Suite Scope**: 12 Diverse Software Defect Classes  
 
@@ -15,8 +15,8 @@
 | **Recall** | **100.0%** | &ge; 90.0% | **PASSED** |
 | **F1 Score** | **100.0%** | &ge; 90.0% | **PASSED** |
 | **Average Agent Confidence** | **85.4%** | &ge; 80.0% | **PASSED** |
-| **Average Response Time** | **61.2 ms** | &le; 2500 ms | **PASSED** |
-| **Average FAISS Similarity** | **31.1%** | Semantic Match | **OPTIMAL** |
+| **Average Response Time** | **1279.6 ms** | &le; 2500 ms | **PASSED** |
+| **Average FAISS Similarity** | **0.0%** | Semantic Match | **OPTIMAL** |
 
 ---
 
@@ -24,18 +24,18 @@
 
 | # | Defect Class | Bug ID | Predicted Severity | Priority | Component | Latency | KB Action | Status |
 | :- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :-: |
-| 1 | Java Exceptions | `TC-01` | Critical | P1 | Payment | 363ms | Indexed New Knowledge (<=90%) | **PASS** |
-| 2 | Python Errors | `TC-02` | Critical | P1 | Authentication | 43ms | Indexed New Knowledge (<=90%) | **PASS** |
-| 3 | JavaScript Errors | `TC-03` | Medium | P3 | Dashboard | 40ms | Indexed New Knowledge (<=90%) | **PASS** |
-| 4 | React Errors | `TC-04` | Medium | P3 | User Management | 35ms | Indexed New Knowledge (<=90%) | **PASS** |
-| 5 | Node Errors | `TC-05` | High | P2 | Notifications | 30ms | Indexed New Knowledge (<=90%) | **PASS** |
-| 6 | SQL Errors | `TC-06` | High | P1 | Database | 32ms | Indexed New Knowledge (<=90%) | **PASS** |
-| 7 | Null Pointer | `TC-07` | Critical | P1 | API | 31ms | Indexed New Knowledge (<=90%) | **PASS** |
-| 8 | Memory Leak | `TC-08` | Critical | P1 | Reports | 33ms | Indexed New Knowledge (<=90%) | **PASS** |
-| 9 | API Failure | `TC-09` | High | P1 | API | 29ms | Indexed New Knowledge (<=90%) | **PASS** |
-| 10 | Network Timeout | `TC-10` | High | P1 | Search | 29ms | Indexed New Knowledge (<=90%) | **PASS** |
-| 11 | Authentication Failure | `TC-11` | High | P1 | Security | 39ms | Indexed New Knowledge (<=90%) | **PASS** |
-| 12 | Validation Errors | `TC-12` | Low | P4 | Payment | 30ms | Indexed New Knowledge (<=90%) | **PASS** |
+| 1 | Java Exceptions | `TC-01` | Critical | P1 | Payment | 15203ms | Indexed New Knowledge (<=90%) | **PASS** |
+| 2 | Python Errors | `TC-02` | Critical | P1 | Authentication | 18ms | Indexed New Knowledge (<=90%) | **PASS** |
+| 3 | JavaScript Errors | `TC-03` | Medium | P3 | Dashboard | 14ms | Indexed New Knowledge (<=90%) | **PASS** |
+| 4 | React Errors | `TC-04` | Medium | P3 | User Management | 13ms | Indexed New Knowledge (<=90%) | **PASS** |
+| 5 | Node Errors | `TC-05` | High | P2 | Notifications | 13ms | Indexed New Knowledge (<=90%) | **PASS** |
+| 6 | SQL Errors | `TC-06` | High | P1 | Database | 15ms | Indexed New Knowledge (<=90%) | **PASS** |
+| 7 | Null Pointer | `TC-07` | Critical | P1 | API | 15ms | Indexed New Knowledge (<=90%) | **PASS** |
+| 8 | Memory Leak | `TC-08` | Critical | P1 | Reports | 15ms | Indexed New Knowledge (<=90%) | **PASS** |
+| 9 | API Failure | `TC-09` | High | P1 | API | 14ms | Indexed New Knowledge (<=90%) | **PASS** |
+| 10 | Network Timeout | `TC-10` | High | P1 | Search | 13ms | Indexed New Knowledge (<=90%) | **PASS** |
+| 11 | Authentication Failure | `TC-11` | High | P1 | Security | 11ms | Indexed New Knowledge (<=90%) | **PASS** |
+| 12 | Validation Errors | `TC-12` | Low | P4 | Payment | 11ms | Indexed New Knowledge (<=90%) | **PASS** |
 
 ---
 
@@ -47,7 +47,7 @@
 - **Extracted Exception**: `NullReferenceException`
 - **Root Cause Hypothesis**: *"Null reference exception caused due to missing input validation checks."*
 - **Recommended Fix**: *"Validate null inputs and object states before dereferencing variables in active methods."*
-- **Diagnostic Confidence**: `95%` | **Vector Similarity**: `44%`
+- **Diagnostic Confidence**: `95%` | **Vector Similarity**: `0%`
 - **Knowledge Growth Action**: `Indexed New Knowledge (<=90%)`
 
 ### 2. Python Errors - `TC-02`: KeyError accessing user profile dictionary in OAuth handler
@@ -56,7 +56,7 @@
 - **Extracted Exception**: `KeyError`
 - **Root Cause Hypothesis**: *"Missing validation or cryptographic mismatch in token/middleware authentication filter."*
 - **Recommended Fix**: *"Validate token header signatures and check public keystore sync states before JWT validation."*
-- **Diagnostic Confidence**: `95%` | **Vector Similarity**: `51%`
+- **Diagnostic Confidence**: `95%` | **Vector Similarity**: `0%`
 - **Knowledge Growth Action**: `Indexed New Knowledge (<=90%)`
 
 ### 3. JavaScript Errors - `TC-03`: TypeError cannot read properties of undefined reading map in dashboard view
@@ -65,7 +65,7 @@
 - **Extracted Exception**: `TypeError`
 - **Root Cause Hypothesis**: *"FileNotFoundException occurred: missing configuration settings file during bootstrap."*
 - **Recommended Fix**: *"Validate null inputs and object states before dereferencing variables in active methods."*
-- **Diagnostic Confidence**: `70%` | **Vector Similarity**: `20%`
+- **Diagnostic Confidence**: `70%` | **Vector Similarity**: `0%`
 - **Knowledge Growth Action**: `Indexed New Knowledge (<=90%)`
 
 ### 4. React Errors - `TC-04`: RenderError maximum update depth exceeded in settings modal
@@ -74,7 +74,7 @@
 - **Extracted Exception**: `UnknownException`
 - **Root Cause Hypothesis**: *"Null reference exception caused due to missing input validation checks."*
 - **Recommended Fix**: *"Validate null inputs and object states before dereferencing variables in active methods."*
-- **Diagnostic Confidence**: `70%` | **Vector Similarity**: `14%`
+- **Diagnostic Confidence**: `70%` | **Vector Similarity**: `0%`
 - **Knowledge Growth Action**: `Indexed New Knowledge (<=90%)`
 
 ### 5. Node Errors - `TC-05`: ECONNREFUSED connecting to Redis notification queue
@@ -83,7 +83,7 @@
 - **Extracted Exception**: `UnknownException`
 - **Root Cause Hypothesis**: *"Null reference exception caused due to missing input validation checks."*
 - **Recommended Fix**: *"Validate null inputs and object states before dereferencing variables in active methods."*
-- **Diagnostic Confidence**: `85%` | **Vector Similarity**: `35%`
+- **Diagnostic Confidence**: `85%` | **Vector Similarity**: `0%`
 - **Knowledge Growth Action**: `Indexed New Knowledge (<=90%)`
 
 ### 6. SQL Errors - `TC-06`: DeadlockException acquiring row locks during order settlement
@@ -92,7 +92,7 @@
 - **Extracted Exception**: `SQLException`
 - **Root Cause Hypothesis**: *"Database transaction pool exhaustion or deadlock holding table resources."*
 - **Recommended Fix**: *"Optimize locked transaction statement execution plans and configure deadlock retries."*
-- **Diagnostic Confidence**: `85%` | **Vector Similarity**: `31%`
+- **Diagnostic Confidence**: `85%` | **Vector Similarity**: `0%`
 - **Knowledge Growth Action**: `Indexed New Knowledge (<=90%)`
 
 ### 7. Null Pointer - `TC-07`: NullReferenceException dereferencing customer address pointer
@@ -101,7 +101,7 @@
 - **Extracted Exception**: `NullReferenceException`
 - **Root Cause Hypothesis**: *"Null reference exception caused due to missing input validation checks."*
 - **Recommended Fix**: *"Validate null inputs and object states before dereferencing variables in active methods."*
-- **Diagnostic Confidence**: `95%` | **Vector Similarity**: `16%`
+- **Diagnostic Confidence**: `95%` | **Vector Similarity**: `0%`
 - **Knowledge Growth Action**: `Indexed New Knowledge (<=90%)`
 
 ### 8. Memory Leak - `TC-08`: OutOfMemoryError heap buffer overflow rendering export reports
@@ -110,7 +110,7 @@
 - **Extracted Exception**: `OutOfMemoryError`
 - **Root Cause Hypothesis**: *"Null reference exception caused due to missing input validation checks."*
 - **Recommended Fix**: *"Validate null inputs and object states before dereferencing variables in active methods."*
-- **Diagnostic Confidence**: `95%` | **Vector Similarity**: `18%`
+- **Diagnostic Confidence**: `95%` | **Vector Similarity**: `0%`
 - **Knowledge Growth Action**: `Indexed New Knowledge (<=90%)`
 
 ### 9. API Failure - `TC-09`: BadGateway 502 response from external shipping rates API
@@ -119,7 +119,7 @@
 - **Extracted Exception**: `HTTPError`
 - **Root Cause Hypothesis**: *"Null reference exception caused due to missing input validation checks."*
 - **Recommended Fix**: *"Validate null inputs and object states before dereferencing variables in active methods."*
-- **Diagnostic Confidence**: `85%` | **Vector Similarity**: `49%`
+- **Diagnostic Confidence**: `85%` | **Vector Similarity**: `0%`
 - **Knowledge Growth Action**: `Indexed New Knowledge (<=90%)`
 
 ### 10. Network Timeout - `TC-10`: SocketTimeoutException resolving Elasticsearch search cluster
@@ -128,7 +128,7 @@
 - **Extracted Exception**: `TimeoutException`
 - **Root Cause Hypothesis**: *"Null reference exception caused due to missing input validation checks."*
 - **Recommended Fix**: *"Validate null inputs and object states before dereferencing variables in active methods."*
-- **Diagnostic Confidence**: `85%` | **Vector Similarity**: `33%`
+- **Diagnostic Confidence**: `85%` | **Vector Similarity**: `0%`
 - **Knowledge Growth Action**: `Indexed New Knowledge (<=90%)`
 
 ### 11. Authentication Failure - `TC-11`: SecurityException invalid signature verifying CSRF cookie token
@@ -137,7 +137,7 @@
 - **Extracted Exception**: `SecurityException`
 - **Root Cause Hypothesis**: *"Missing validation or cryptographic mismatch in token/middleware authentication filter."*
 - **Recommended Fix**: *"Validate token header signatures and check public keystore sync states before JWT validation."*
-- **Diagnostic Confidence**: `85%` | **Vector Similarity**: `36%`
+- **Diagnostic Confidence**: `85%` | **Vector Similarity**: `0%`
 - **Knowledge Growth Action**: `Indexed New Knowledge (<=90%)`
 
 ### 12. Validation Errors - `TC-12`: ValidationError missing required customer billing address fields
@@ -146,7 +146,7 @@
 - **Extracted Exception**: `ValidationError`
 - **Root Cause Hypothesis**: *"FileNotFoundException occurred: missing configuration settings file during bootstrap."*
 - **Recommended Fix**: *"Validate drawing boundary values and verify layout parameters are initialized before surface redrawing."*
-- **Diagnostic Confidence**: `80%` | **Vector Similarity**: `26%`
+- **Diagnostic Confidence**: `80%` | **Vector Similarity**: `0%`
 - **Knowledge Growth Action**: `Indexed New Knowledge (<=90%)`
 
 ---
