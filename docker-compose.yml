@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # MongoDB Database (Relational fallback is still supported)
+  mongodb:
+    image: mongo:6.0
+    container_name: bugsense-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  # Python AI FastAPI service (FAISS Vector RAG)
+  python-ai:
+    build:
+      context: ./python-ai
+      dockerfile: Dockerfile
+    container_name: bugsense-python-ai
+    restart: always
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./python-ai/embeddings:/app/embeddings
+      - ./python-ai/embeddings/cache:/app/embeddings/cache
+
+  # Node Express Server (API Gateway)
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: bugsense-server
+    restart: always
+    environment:
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongodb:27017/bugsense
+      - PYTHON_AI_URL=http://python-ai:8000
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server/data:/app/data
+      - ./uploads:/app/uploads
+    depends_on:
+      - mongodb
+      - python-ai
+
+  # React Frontend (Vite proxy config routed dynamically)
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: bugsense-frontend
+    restart: always
+    environment:
+      - VITE_API_URL=http://server:5000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+
+volumes:
+  mongodb_data:
