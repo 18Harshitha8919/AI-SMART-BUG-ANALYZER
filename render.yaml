@@ -33,7 +33,7 @@ services:
         sync: false
 
   # 3. React Frontend
-  - type: web
+  - type: static
     name: bugsense-frontend
     runtime: static
     rootDir: client
