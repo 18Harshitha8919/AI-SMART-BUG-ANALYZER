@@ -1,0 +1,55 @@
+# Blueprint configuration for deploying BugSense AI on Render.
+# Refer to the repository documentation for setup instructions.
+services:
+  # 1. FastAPI AI Service
+  - type: web
+    name: bugsense-python-ai
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: KNOWLEDGEBASE_PATH
+        value: ./knowledgebase
+      - key: PYTHON_VERSION
+        value: 3.10.12
+    # NOTE: Render free-tier disks are ephemeral. To enable persistent knowledge-base self-growth,
+    # you must attach a persistent disk to the path defined in KNOWLEDGEBASE_PATH:
+    # disk:
+    #   name: bugsense-kb-disk
+    #   mountPath: /app/knowledgebase
+    #   sizeGB: 1
+
+  # 2. Node.js Express Gateway API
+  - type: web
+    name: bugsense-server
+    env: node
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: PYTHON_AI_URL
+        fromService:
+          name: bugsense-python-ai
+          type: web
+          property: host
+      # MongoDB database configuration. If not provided, server db.js will automatically
+      # fall back to local JSON file storage (server/data/bugs.json and knowledge.json).
+      # NOTE: These files are ephemeral on the free tier. For production setups, configure MONGODB_URI.
+      - key: MONGODB_URI
+        sync: false
+
+  # 3. React Frontend Static Site
+  - type: web
+    name: bugsense-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    publishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: bugsense-server
+          type: web
+          property: host

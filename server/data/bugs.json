@@ -1,0 +1,355 @@
+[
+  {
+    "bugId": "BUG-1001",
+    "title": "User Login Fails with Valid Credentials – Authentication Service Error",
+    "description": "Issue:\nUsers are unable to log in to the application even when they provide the correct username and password.When a registered user enters valid login credentials and clicks the Login button, the application sends the authentication request to the backend. Instead of successfully authenticating the user and redirecting them to the dashboard, the request fails with an internal server error.\n\nThe issue occurs intermittently, but it is more frequently observed when multiple users attempt to log in at the same time. The authentication service appears to fail while retrieving the user's account details from the database.",
+    "severity": "Medium",
+    "priority": "Medium",
+    "environment": "Production",
+    "module": "Backend",
+    "reporterName": "Harshitha Bejjipuram",
+    "stackTrace": "Traceback (most recent call last):\n  File \"/app/controllers/auth_controller.py\", line 87, in login\n    user = auth_service.authenticate(username, password)\n  File \"/app/services/auth_service.py\", line 142, in authenticate\n    user = user_repository.find_by_username(username)\n  File \"/app/repositories/user_repository.py\", line 56, in find_by_username\n    return database.execute(query, username)\n  File \"/app/database/connection.py\", line 91, in execute\n    cursor.execute(query, params)\npsycopg2.OperationalError:\nserver closed the connection unexpectedly",
+    "errorLog": "2026-08-12 10:42:31,421 ERROR [AuthService]\nAuthentication request failed for user: john.doe\n\n2026-08-12 10:42:31,423 ERROR [UserRepository]\nDatabase connection lost while retrieving user details\n\n2026-08-12 10:42:31,425 ERROR [Database]\npsycopg2.OperationalError:\nserver closed the connection unexpectedly\n\n2026-08-12 10:42:31,427 ERROR [AuthController]\nLogin request failed with status code: 500\n\n2026-08-12 10:42:31,428 INFO [Request]\nPOST /api/auth/login - 500 Internal Server Error",
+    "cleanedDocument": "User Login Fails with Valid Credentials  Authentication Service Error Issue: Users are unable to log in to the application even when they provide the correct username and password.When a registered user enters valid login credentials and clicks the Login button, the application sends the authentication request to the backend. Instead of successfully authenticating the user and redirecting them to the dashboard, the request fails with an internal server error. The issue occurs intermittently, but it is more frequently observed when multiple users attempt to log in at the same time. The authentication service appears to fail while retrieving the user's account details from the database. Traceback (most recent call last): File \"/app/controllers/auth_controller.py\", line 87, in login user = auth_service.authenticate(username, password) File \"/app/services/auth_service.py\", line 142, in authenticate user = user_repository.find_by_username(username) File \"/app/repositories/user_repository.py\", line 56, in find_by_username return database.execute(query, username) File \"/app/database/connection.py\", line 91, in execute cursor.execute(query, params) psycopg2.OperationalError: server closed the connection unexpectedly 2026-08-12 10:42:31,421 ERROR [AuthService] Authentication request failed for user: john.doe 2026-08-12 10:42:31,423 ERROR [UserRepository] Database connection lost while retrieving user details 2026-08-12 10:42:31,425 ERROR [Database] psycopg2.OperationalError: server closed the connection unexpectedly 2026-08-12 10:42:31,427 ERROR [AuthController] Login request failed with status code: 500 2026-08-12 10:42:31,428 INFO [Request] POST /api/auth/login - 500 Internal Server Error",
+    "attachments": [],
+    "agentInsights": {
+      "bug_id": "BUG-1001",
+      "triage": {
+        "triage_component": "Authentication",
+        "severity": "Medium",
+        "priority": "P3",
+        "confidence": 70,
+        "reasoning": "AI triaged defect category to 'Authentication' (score: 30). Default triage classification applied for general unhandled system warnings. Medium severity bug mapped priority to P3.",
+        "severity_reason": "Default triage classification applied for general unhandled system warnings.",
+        "priority_reason": "Medium severity bug mapped priority to P3."
+      },
+      "log_analysis": {
+        "exception_type": "OperationalError",
+        "error_message": "server closed the connection unexpectedly",
+        "failed_class": "Connection",
+        "failed_method": "execute",
+        "timestamp": "2026-08-13 14:59:38",
+        "failure_reason": "Crashed during invocation of method execute() in class Connection.",
+        "file": "connection.py",
+        "line": 91,
+        "function": "execute",
+        "root_cause": "Decoded exception OperationalError inside thread context. The stack failed at line 91 within file connection.py executing function execute().",
+        "affected_code_path": [
+          "auth_controller.py",
+          "auth_service.py",
+          "user_repository.py",
+          "connection.py"
+        ]
+      },
+      "root_cause": {
+        "root_cause": "Missing validation or cryptographic mismatch in token/middleware authentication filter.",
+        "confidence": 85,
+        "supporting_evidence": [
+          "BUG-234"
+        ],
+        "explanation": "The trace context indicates failure during signature checking or public key synchronization routines."
+      },
+      "duplicates": [],
+      "remediation": {
+        "immediate_fix": "Validate token header signatures and check public keystore sync states before JWT validation.",
+        "long_term": "Implement centralized authentication validation middleware and automate keystore updates.",
+        "best_practices": [
+          "Always use exception handling around cryptography.",
+          "Incorporate centralized token validation check blocks.",
+          "Establish strict integration tests for authentication bypass vectors.",
+          "Implement secure metadata token logging."
+        ]
+      },
+      "timestamp": "2026-08-13T09:29:39.037981Z",
+      "status": "completed"
+    },
+    "createdAt": "2026-08-13T09:29:39.040Z",
+    "_id": "1786613379040",
+    "agentInsights.status": "resolved"
+  },
+  {
+    "bugId": "BUG-1002",
+    "title": "Users unable to login with valid credentials  ",
+    "description": "Users enter correct credentials, but the login request returns 500 Internal Server Error. The authentication service fails while retrieving user information from the database.",
+    "severity": "Medium",
+    "priority": "Medium",
+    "environment": "Production",
+    "module": "Backend",
+    "reporterName": "Harshitha Bejjipuram",
+    "stackTrace": "",
+    "errorLog": "ERROR [AuthService]\nAuthentication request failed\n\nERROR [Database]\nDatabase connection lost\n\nERROR [AuthController]\nPOST /api/auth/login - 500 Internal Server Error",
+    "cleanedDocument": "Users unable to login with valid credentials Users enter correct credentials, but the login request returns 500 Internal Server Error. The authentication service fails while retrieving user information from the database. ERROR [AuthService] Authentication request failed ERROR [Database] Database connection lost ERROR [AuthController] POST /api/auth/login - 500 Internal Server Error",
+    "attachments": [],
+    "agentInsights": {
+      "bug_id": "BUG-1002",
+      "triage": {
+        "triage_component": "Authentication",
+        "severity": "Medium",
+        "priority": "P3",
+        "confidence": 70,
+        "reasoning": "AI triaged defect category to 'Authentication' (score: 30). Default triage classification applied for general unhandled system warnings. Medium severity bug mapped priority to P3.",
+        "severity_reason": "Default triage classification applied for general unhandled system warnings.",
+        "priority_reason": "Medium severity bug mapped priority to P3."
+      },
+      "log_analysis": {
+        "exception_type": "UnknownException",
+        "error_message": "An unhandled runtime exception occurred during service execution.",
+        "failed_class": "Unknown",
+        "failed_method": "Unknown",
+        "timestamp": "2026-08-13 15:06:41",
+        "failure_reason": "Crashed during invocation of method Unknown() in class Unknown.",
+        "file": "Unknown",
+        "line": 0,
+        "function": "Unknown",
+        "root_cause": "Decoded exception UnknownException inside thread context. The stack failed at line 0 within file Unknown executing function Unknown().",
+        "affected_code_path": []
+      },
+      "root_cause": {
+        "root_cause": "Missing validation or cryptographic mismatch in token/middleware authentication filter.",
+        "confidence": 85,
+        "supporting_evidence": [
+          "BUG-234"
+        ],
+        "explanation": "The trace context indicates failure during signature checking or public key synchronization routines."
+      },
+      "duplicates": [],
+      "remediation": {
+        "immediate_fix": "Validate token header signatures and check public keystore sync states before JWT validation.",
+        "long_term": "Implement centralized authentication validation middleware and automate keystore updates.",
+        "best_practices": [
+          "Always use exception handling around cryptography.",
+          "Incorporate centralized token validation check blocks.",
+          "Establish strict integration tests for authentication bypass vectors.",
+          "Implement secure metadata token logging."
+        ]
+      },
+      "timestamp": "2026-08-13T09:36:41.312539Z",
+      "status": "completed"
+    },
+    "createdAt": "2026-08-13T09:36:41.316Z",
+    "_id": "1786613801316"
+  },
+  {
+    "bugId": "BUG-1003",
+    "title": "Login API returns 500 when user account is locked",
+    "description": "When a user whose account is locked tries to log in, the API returns a 500 error instead of displaying an appropriate account-locked message.",
+    "severity": "Medium",
+    "priority": "Medium",
+    "environment": "Production",
+    "module": "Backend",
+    "reporterName": "Harshitha Bejjipuram",
+    "stackTrace": "",
+    "errorLog": "ERROR [AuthService]\nUser authentication failed\n\nERROR [AuthController]\nUnhandled exception while processing login request\n\nERROR [API]\nPOST /api/auth/login - 500 Internal Server Error",
+    "cleanedDocument": "Login API returns 500 when user account is locked When a user whose account is locked tries to log in, the API returns a 500 error instead of displaying an appropriate account-locked message. ERROR [AuthService] User authentication failed ERROR [AuthController] Unhandled exception while processing login request ERROR [API] POST /api/auth/login - 500 Internal Server Error",
+    "attachments": [],
+    "agentInsights": {
+      "bug_id": "BUG-1003",
+      "triage": {
+        "triage_component": "API",
+        "severity": "Medium",
+        "priority": "P3",
+        "confidence": 70,
+        "reasoning": "AI triaged defect category to 'API' (score: 20). Default triage classification applied for general unhandled system warnings. Medium severity bug mapped priority to P3.",
+        "severity_reason": "Default triage classification applied for general unhandled system warnings.",
+        "priority_reason": "Medium severity bug mapped priority to P3."
+      },
+      "log_analysis": {
+        "exception_type": "UnknownException",
+        "error_message": "An unhandled runtime exception occurred during service execution.",
+        "failed_class": "Unknown",
+        "failed_method": "Unknown",
+        "timestamp": "2026-08-13 15:10:05",
+        "failure_reason": "Crashed during invocation of method Unknown() in class Unknown.",
+        "file": "Unknown",
+        "line": 0,
+        "function": "Unknown",
+        "root_cause": "Decoded exception UnknownException inside thread context. The stack failed at line 0 within file Unknown executing function Unknown().",
+        "affected_code_path": []
+      },
+      "root_cause": {
+        "root_cause": "Missing validation or cryptographic mismatch in token/middleware authentication filter.",
+        "confidence": 85,
+        "supporting_evidence": [
+          "BUG-234"
+        ],
+        "explanation": "The trace context indicates failure during signature checking or public key synchronization routines."
+      },
+      "duplicates": [],
+      "remediation": {
+        "immediate_fix": "Validate null inputs and object states before dereferencing variables in active methods.",
+        "long_term": "Adopt robust static analysis check utilities and establish structural defensive programming standards.",
+        "best_practices": [
+          "Adopt strict null checking assertions.",
+          "Incorporate verbose log traces.",
+          "Expand code coverage with unit testing tools.",
+          "Perform standard regression checking."
+        ]
+      },
+      "timestamp": "2026-08-13T09:40:05.589303Z",
+      "status": "completed"
+    },
+    "createdAt": "2026-08-13T09:40:05.592Z",
+    "_id": "1786614005592",
+    "agentInsights.status": "resolved"
+  },
+  {
+    "bugId": "BUG-1004",
+    "title": "Payment API Fails with Gateway Timeout During Transaction",
+    "description": "When a user attempts to complete a payment, the Payment API occasionally fails\nwith a gateway timeout error. The payment request is sent successfully from\nthe frontend, but the backend does not receive a response from the external\npayment gateway within the configured timeout period.\n\nAs a result, the transaction is marked as failed and the user sees an\n\"Unable to process payment\" message.\n\nThe issue is mainly observed when the payment gateway response is delayed\ndue to high network latency or temporary gateway load.\n\nExpected Result:\nThe payment should either complete successfully when the gateway responds,\nor the system should handle the timeout gracefully without incorrectly\nmarking the transaction as failed.\n\nActual Result:\nThe Payment API returns a 504 Gateway Timeout error and the payment is\nshown as failed.",
+    "severity": "Medium",
+    "priority": "Medium",
+    "environment": "Production",
+    "module": "Backend",
+    "reporterName": "Harshitha Bejjipuram",
+    "stackTrace": "Traceback (most recent call last):\n  File \"/app/controllers/payment_controller.py\", line 118, in process_payment\n    response = payment_service.process_transaction(payment_data)\n\n  File \"/app/services/payment_service.py\", line 164, in process_transaction\n    response = payment_gateway.charge(payment_data)\n\n  File \"/app/integrations/payment_gateway.py\", line 92, in charge\n    response = http_client.post(gateway_url, payload, timeout=10)\n\n  File \"/app/network/http_client.py\", line 74, in post\n    raise TimeoutError(\"Payment gateway request timed out\")\n\nTimeoutError: Payment gateway request timed out",
+    "errorLog": "2026-08-13 15:20:41,218 ERROR [PaymentGateway]\nPayment gateway request initiated\n\n2026-08-13 15:20:51,229 ERROR [PaymentGateway]\nRequest timed out after 10 seconds\n\n2026-08-13 15:20:51,231 ERROR [PaymentService]\nPayment transaction failed due to gateway timeout\n\n2026-08-13 15:20:51,233 ERROR [PaymentController]\nPOST /api/payment/process - 504 Gateway Timeout\n\n2026-08-13 15:20:51,235 INFO [Payment]\nTransaction status changed to FAILED",
+    "cleanedDocument": "Payment API Fails with Gateway Timeout During Transaction When a user attempts to complete a payment, the Payment API occasionally fails with a gateway timeout error. The payment request is sent successfully from the frontend, but the backend does not receive a response from the external payment gateway within the configured timeout period. As a result, the transaction is marked as failed and the user sees an \"Unable to process payment\" message. The issue is mainly observed when the payment gateway response is delayed due to high network latency or temporary gateway load. Expected Result: The payment should either complete successfully when the gateway responds, or the system should handle the timeout gracefully without incorrectly marking the transaction as failed. Actual Result: The Payment API returns a 504 Gateway Timeout error and the payment is shown as failed. Traceback (most recent call last): File \"/app/controllers/payment_controller.py\", line 118, in process_payment response = payment_service.process_transaction(payment_data) File \"/app/services/payment_service.py\", line 164, in process_transaction response = payment_gateway.charge(payment_data) File \"/app/integrations/payment_gateway.py\", line 92, in charge response = http_client.post(gateway_url, payload, timeout=10) File \"/app/network/http_client.py\", line 74, in post raise TimeoutError(\"Payment gateway request timed out\") TimeoutError: Payment gateway request timed out 2026-08-13 15:20:41,218 ERROR [PaymentGateway] Payment gateway request initiated 2026-08-13 15:20:51,229 ERROR [PaymentGateway] Request timed out after 10 seconds 2026-08-13 15:20:51,231 ERROR [PaymentService] Payment transaction failed due to gateway timeout 2026-08-13 15:20:51,233 ERROR [PaymentController] POST /api/payment/process - 504 Gateway Timeout 2026-08-13 15:20:51,235 INFO [Payment] Transaction status changed to FAILED",
+    "attachments": [],
+    "agentInsights": {
+      "bug_id": "BUG-1004",
+      "triage": {
+        "triage_component": "API",
+        "severity": "High",
+        "priority": "P1",
+        "confidence": 85,
+        "reasoning": "AI triaged defect category to 'API' (score: 30). System operations blocked or restricted due to exceptions matching high severity rules. High severity bug in Production environment escalated priority to P1.",
+        "severity_reason": "System operations blocked or restricted due to exceptions matching high severity rules.",
+        "priority_reason": "High severity bug in Production environment escalated priority to P1."
+      },
+      "log_analysis": {
+        "exception_type": "TimeoutException",
+        "error_message": "Payment gateway request timed out",
+        "failed_class": "HttpClient",
+        "failed_method": "post",
+        "timestamp": "2026-08-13 15:43:54",
+        "failure_reason": "Crashed during invocation of method post() in class HttpClient.",
+        "file": "http_client.py",
+        "line": 74,
+        "function": "post",
+        "root_cause": "Decoded exception TimeoutException inside thread context. The stack failed at line 74 within file http_client.py executing function post().",
+        "affected_code_path": [
+          "payment_controller.py",
+          "payment_service.py",
+          "payment_gateway.py",
+          "http_client.py"
+        ]
+      },
+      "root_cause": {
+        "root_cause": "Null reference exception caused due to missing input validation checks.",
+        "confidence": 75,
+        "supporting_evidence": [
+          "BUG-1001"
+        ],
+        "explanation": "System attempted to reference properties on a null or uninitialized object runtime context."
+      },
+      "duplicates": [
+        {
+          "bug_id": "BUG-1001",
+          "similarity": 38,
+          "summary": "Issue:\nUsers are unable to log in to the application even when they provide the correct username and password.When a registered user enters valid login credentials and clicks the Login button, the application sends the authentication request to the backend. Instead of successfully authenticating the user and redirecting them to the dashboard, the request fails with an internal server error.\n\nThe issue occurs intermittently, but it is more frequently observed when multiple users attempt to log in at the same time. The authentication service appears to fail while retrieving the user's account details from the database.",
+          "resolution": "Validate token header signatures and check public keystore sync states before JWT validation."
+        }
+      ],
+      "remediation": {
+        "immediate_fix": "Validate drawing boundary values and verify layout parameters are initialized before surface redrawing.",
+        "long_term": "Establish standardized canvas viewport checking routines and coordinate page boundary updates.",
+        "best_practices": [
+          "Implement fallback rendering buffers.",
+          "Establish GUI regression tests.",
+          "Track viewport scale metrics.",
+          "Log canvas boundary exception trace dumps."
+        ]
+      },
+      "timestamp": "2026-08-13T10:13:54.880556Z",
+      "status": "completed"
+    },
+    "createdAt": "2026-08-13T10:13:54.882Z",
+    "_id": "1786616034882",
+    "agentInsights.status": "resolved"
+  },
+  {
+    "bugId": "BUG-1005",
+    "title": "Dashboard Fails to Load User Data",
+    "description": "When a user logs into the application and opens the Dashboard, the page loads but the user statistics and recent activity data are not displayed. The frontend sends a request to the Dashboard API, but the API returns a 500 Internal Server Error.",
+    "severity": "Medium",
+    "priority": "Medium",
+    "environment": "Production",
+    "module": "Backend",
+    "reporterName": "Harshitha Bejjipuram",
+    "stackTrace": "Traceback (most recent call last):\n  File \"/app/controllers/dashboard_controller.py\", line 75, in get_stats\n    stats = dashboard_service.get_user_statistics()\n\n  File \"/app/services/dashboard_service.py\", line 112, in get_user_statistics\n    return user_repository.fetch_statistics()\n\n  File \"/app/repositories/user_repository.py\", line 89, in fetch_statistics\n    cursor.execute(query)\n\npsycopg2.errors.UndefinedColumn:\ncolumn \"last_login\" does not exist",
+    "errorLog": "2026-08-13 10:25:41 ERROR [DashboardService]\nFailed to retrieve user statistics\n\n2026-08-13 10:25:41 ERROR [DashboardController]\nGET /api/dashboard/stats - 500 Internal Server Error\n\n2026-08-13 10:25:41 ERROR [Database]\nColumn 'last_login' does not exist in query result",
+    "cleanedDocument": "Dashboard Fails to Load User Data When a user logs into the application and opens the Dashboard, the page loads but the user statistics and recent activity data are not displayed. The frontend sends a request to the Dashboard API, but the API returns a 500 Internal Server Error. Traceback (most recent call last): File \"/app/controllers/dashboard_controller.py\", line 75, in get_stats stats = dashboard_service.get_user_statistics() File \"/app/services/dashboard_service.py\", line 112, in get_user_statistics return user_repository.fetch_statistics() File \"/app/repositories/user_repository.py\", line 89, in fetch_statistics cursor.execute(query) psycopg2.errors.UndefinedColumn: column \"last_login\" does not exist 2026-08-13 10:25:41 ERROR [DashboardService] Failed to retrieve user statistics 2026-08-13 10:25:41 ERROR [DashboardController] GET /api/dashboard/stats - 500 Internal Server Error 2026-08-13 10:25:41 ERROR [Database] Column 'last_login' does not exist in query result",
+    "attachments": [],
+    "agentInsights": {
+      "bug_id": "BUG-1005",
+      "triage": {
+        "triage_component": "API",
+        "severity": "Medium",
+        "priority": "P3",
+        "confidence": 70,
+        "reasoning": "AI triaged defect category to 'API' (score: 25). Default triage classification applied for general unhandled system warnings. Medium severity bug mapped priority to P3.",
+        "severity_reason": "Default triage classification applied for general unhandled system warnings.",
+        "priority_reason": "Medium severity bug mapped priority to P3."
+      },
+      "log_analysis": {
+        "exception_type": "UnknownException",
+        "error_message": "An unhandled runtime exception occurred during service execution.",
+        "failed_class": "UserRepository",
+        "failed_method": "fetch_statistics",
+        "timestamp": "2026-08-13 17:33:58",
+        "failure_reason": "Crashed during invocation of method fetch_statistics() in class UserRepository.",
+        "file": "user_repository.py",
+        "line": 89,
+        "function": "fetch_statistics",
+        "root_cause": "Decoded exception UnknownException inside thread context. The stack failed at line 89 within file user_repository.py executing function fetch_statistics().",
+        "affected_code_path": [
+          "dashboard_controller.py",
+          "dashboard_service.py",
+          "user_repository.py"
+        ]
+      },
+      "root_cause": {
+        "root_cause": "Null reference exception caused due to missing input validation checks.",
+        "confidence": 75,
+        "supporting_evidence": [
+          "BUG-1001"
+        ],
+        "explanation": "System attempted to reference properties on a null or uninitialized object runtime context."
+      },
+      "duplicates": [
+        {
+          "bug_id": "BUG-1001",
+          "similarity": 47,
+          "summary": "Issue:\nUsers are unable to log in to the application even when they provide the correct username and password.When a registered user enters valid login credentials and clicks the Login button, the application sends the authentication request to the backend. Instead of successfully authenticating the user and redirecting them to the dashboard, the request fails with an internal server error.\n\nThe issue occurs intermittently, but it is more frequently observed when multiple users attempt to log in at the same time. The authentication service appears to fail while retrieving the user's account details from the database.",
+          "resolution": "Validate token header signatures and check public keystore sync states before JWT validation."
+        },
+        {
+          "bug_id": "BUG-1003",
+          "similarity": 41,
+          "summary": "When a user whose account is locked tries to log in, the API returns a 500 error instead of displaying an appropriate account-locked message.",
+          "resolution": "Validate null inputs and object states before dereferencing variables in active methods."
+        },
+        {
+          "bug_id": "BUG-1004",
+          "similarity": 15,
+          "summary": "When a user attempts to complete a payment, the Payment API occasionally fails\nwith a gateway timeout error. The payment request is sent successfully from\nthe frontend, but the backend does not receive a response from the external\npayment gateway within the configured timeout period.\n\nAs a result, the transaction is marked as failed and the user sees an\n\"Unable to process payment\" message.\n\nThe issue is mainly observed when the payment gateway response is delayed\ndue to high network latency or temporary gateway load.\n\nExpected Result:\nThe payment should either complete successfully when the gateway responds,\nor the system should handle the timeout gracefully without incorrectly\nmarking the transaction as failed.\n\nActual Result:\nThe Payment API returns a 504 Gateway Timeout error and the payment is\nshown as failed.",
+          "resolution": "Validate drawing boundary values and verify layout parameters are initialized before surface redrawing."
+        }
+      ],
+      "remediation": {
+        "immediate_fix": "Validate drawing boundary values and verify layout parameters are initialized before surface redrawing.",
+        "long_term": "Establish standardized canvas viewport checking routines and coordinate page boundary updates.",
+        "best_practices": [
+          "Implement fallback rendering buffers.",
+          "Establish GUI regression tests.",
+          "Track viewport scale metrics.",
+          "Log canvas boundary exception trace dumps."
+        ]
+      },
+      "timestamp": "2026-08-13T12:03:59.536372Z",
+      "status": "completed"
+    },
+    "createdAt": "2026-08-13T12:03:59.543Z",
+    "_id": "1786622639543"
+  }
+]

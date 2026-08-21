@@ -1,0 +1,47 @@
+[
+  {
+    "bugId": "BUG-1001",
+    "title": "User Login Fails with Valid Credentials – Authentication Service Error",
+    "description": "Issue:\nUsers are unable to log in to the application even when they provide the correct username and password.When a registered user enters valid login credentials and clicks the Login button, the application sends the authentication request to the backend. Instead of successfully authenticating the user and redirecting them to the dashboard, the request fails with an internal server error.\n\nThe issue occurs intermittently, but it is more frequently observed when multiple users attempt to log in at the same time. The authentication service appears to fail while retrieving the user's account details from the database.",
+    "stackTrace": "Traceback (most recent call last):\n  File \"/app/controllers/auth_controller.py\", line 87, in login\n    user = auth_service.authenticate(username, password)\n  File \"/app/services/auth_service.py\", line 142, in authenticate\n    user = user_repository.find_by_username(username)\n  File \"/app/repositories/user_repository.py\", line 56, in find_by_username\n    return database.execute(query, username)\n  File \"/app/database/connection.py\", line 91, in execute\n    cursor.execute(query, params)\npsycopg2.OperationalError:\nserver closed the connection unexpectedly",
+    "rootCause": "Missing validation or cryptographic mismatch in token/middleware authentication filter.",
+    "fixAction": "Validate token header signatures and check public keystore sync states before JWT validation.",
+    "severity": "Medium",
+    "priority": "Medium",
+    "category": "Backend",
+    "component": "Authentication",
+    "verified": true,
+    "resolutionDate": "2026-08-13T10:03:40.160Z",
+    "_id": "1786615420160"
+  },
+  {
+    "bugId": "BUG-1004",
+    "title": "Payment API Fails with Gateway Timeout During Transaction",
+    "description": "When a user attempts to complete a payment, the Payment API occasionally fails\nwith a gateway timeout error. The payment request is sent successfully from\nthe frontend, but the backend does not receive a response from the external\npayment gateway within the configured timeout period.\n\nAs a result, the transaction is marked as failed and the user sees an\n\"Unable to process payment\" message.\n\nThe issue is mainly observed when the payment gateway response is delayed\ndue to high network latency or temporary gateway load.\n\nExpected Result:\nThe payment should either complete successfully when the gateway responds,\nor the system should handle the timeout gracefully without incorrectly\nmarking the transaction as failed.\n\nActual Result:\nThe Payment API returns a 504 Gateway Timeout error and the payment is\nshown as failed.",
+    "stackTrace": "Traceback (most recent call last):\n  File \"/app/controllers/payment_controller.py\", line 118, in process_payment\n    response = payment_service.process_transaction(payment_data)\n\n  File \"/app/services/payment_service.py\", line 164, in process_transaction\n    response = payment_gateway.charge(payment_data)\n\n  File \"/app/integrations/payment_gateway.py\", line 92, in charge\n    response = http_client.post(gateway_url, payload, timeout=10)\n\n  File \"/app/network/http_client.py\", line 74, in post\n    raise TimeoutError(\"Payment gateway request timed out\")\n\nTimeoutError: Payment gateway request timed out",
+    "rootCause": "Null reference exception caused due to missing input validation checks.",
+    "fixAction": "Validate drawing boundary values and verify layout parameters are initialized before surface redrawing.",
+    "severity": "Medium",
+    "priority": "Medium",
+    "category": "Backend",
+    "component": "API",
+    "verified": true,
+    "resolutionDate": "2026-08-13T10:16:45.116Z",
+    "_id": "1786616067361"
+  },
+  {
+    "bugId": "BUG-1003",
+    "title": "Login API returns 500 when user account is locked",
+    "description": "When a user whose account is locked tries to log in, the API returns a 500 error instead of displaying an appropriate account-locked message.",
+    "stackTrace": "",
+    "rootCause": "Missing validation or cryptographic mismatch in token/middleware authentication filter.",
+    "fixAction": "Validate null inputs and object states before dereferencing variables in active methods.",
+    "severity": "Medium",
+    "priority": "Medium",
+    "category": "Backend",
+    "component": "API",
+    "verified": true,
+    "resolutionDate": "2026-08-13T10:17:16.232Z",
+    "_id": "1786616236232"
+  }
+]

@@ -1,0 +1,14 @@
+.env
+*.env
+__pycache__/
+*.pyc
+node_modules/
+dist/
+build/
+venv/
+.pytest_cache/
+knowledgebase/cache/
+uploads/*
+!uploads/.gitkeep
+*.log
+critical_security_leak.log
