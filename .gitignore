@@ -12,3 +12,4 @@ uploads/*
 !uploads/.gitkeep
 *.log
 critical_security_leak.log
+python-ai/knowledgebase/cache/
