@@ -44,4 +44,4 @@ services:
         fromService:
           name: bugsense-server
           type: web
-          property: host
+          property: url
