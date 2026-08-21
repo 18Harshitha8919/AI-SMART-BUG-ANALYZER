@@ -44,11 +44,14 @@ const Analytics: React.FC = () => {
   const getApiBaseUrl = (): string => {
     let url = import.meta.env.VITE_API_URL || 'https://bugsense-server.onrender.com';
     url = url.trim();
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      url = `https://${url}`;
-    }
     if (url.endsWith('/')) {
       url = url.slice(0, -1);
+    }
+    if (url.endsWith('/api')) {
+      url = url.slice(0, -4);
+    }
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = `https://${url}`;
     }
     return url;
   };
