@@ -12,10 +12,9 @@ try:
 except ImportError:
     FAISS_AVAILABLE = False
     print("[Warning] FAISS library not found. A numpy-based cosine similarity index will serve as fallback.")
-
 # Configure path to knowledgebase directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-KNOWLEDGEBASE_DIR = os.getenv("KNOWLEDGEBASE_PATH", os.path.abspath(os.path.join(BASE_DIR, "..", "knowledgebase")))
+KNOWLEDGEBASE_DIR = os.path.join(BASE_DIR, "knowledgebase")
 
 class NumpyVectorStore:
     """
