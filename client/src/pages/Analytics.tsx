@@ -41,12 +41,23 @@ const Analytics: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedSeverity, setSelectedSeverity] = useState<string>('ALL');
 
+  const getApiBaseUrl = (): string => {
+    let url = import.meta.env.VITE_API_URL || 'https://bugsense-server.onrender.com';
+    url = url.trim();
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = `https://${url}`;
+    }
+    if (url.endsWith('/')) {
+      url = url.slice(0, -1);
+    }
+    return url;
+  };
+
   const fetchAnalytics = async () => {
     setLoading(true);
     setError('');
     try {
-      const apiURL = import.meta.env.VITE_API_URL || 'https://bugsense-server.onrender.com';
-      const cleanURL = apiURL.endsWith('/') ? apiURL.slice(0, -1) : apiURL;
+      const cleanURL = getApiBaseUrl();
       const res = await axios.get(`${cleanURL}/api/analytics/defect-patterns`);
       setData(res.data);
     } catch (e: any) {
@@ -61,8 +72,7 @@ const Analytics: React.FC = () => {
   }, []);
 
   const handleExportCSV = () => {
-    const apiURL = import.meta.env.VITE_API_URL || 'https://bugsense-server.onrender.com';
-    const cleanURL = apiURL.endsWith('/') ? apiURL.slice(0, -1) : apiURL;
+    const cleanURL = getApiBaseUrl();
     window.open(`${cleanURL}/api/analytics/export-csv`, '_blank');
   };
 
