@@ -59,7 +59,9 @@ const Analytics: React.FC = () => {
   }, []);
 
   const handleExportCSV = () => {
-    window.open('http://localhost:5000/api/analytics/export-csv', '_blank');
+    const apiURL = import.meta.env.VITE_API_URL || '';
+    const cleanURL = apiURL.endsWith('/') ? apiURL.slice(0, -1) : apiURL;
+    window.open(`${cleanURL}/api/analytics/export-csv`, '_blank');
   };
 
   if (loading) {
