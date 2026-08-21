@@ -45,7 +45,9 @@ const Analytics: React.FC = () => {
     setLoading(true);
     setError('');
     try {
-      const res = await axios.get('/api/analytics/defect-patterns');
+      const apiURL = import.meta.env.VITE_API_URL || 'https://bugsense-server.onrender.com';
+      const cleanURL = apiURL.endsWith('/') ? apiURL.slice(0, -1) : apiURL;
+      const res = await axios.get(`${cleanURL}/api/analytics/defect-patterns`);
       setData(res.data);
     } catch (e: any) {
       setError(e.message || 'Failed to load defect pattern analytics');
@@ -59,7 +61,7 @@ const Analytics: React.FC = () => {
   }, []);
 
   const handleExportCSV = () => {
-    const apiURL = import.meta.env.VITE_API_URL || '';
+    const apiURL = import.meta.env.VITE_API_URL || 'https://bugsense-server.onrender.com';
     const cleanURL = apiURL.endsWith('/') ? apiURL.slice(0, -1) : apiURL;
     window.open(`${cleanURL}/api/analytics/export-csv`, '_blank');
   };
